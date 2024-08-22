@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
 import jwt from "jsonwebtoken";
-import {userAuth, userSign} from "./middlewares/bcrypt.js" //for encrypting passwords before storing in database
 import cookieParser from "cookie-parser";
 import fs from "fs"
 import {userModel,PostModel} from "./db/db.js"
@@ -40,14 +39,18 @@ app.use('/register',registerRouter)
 
 app.get('/profile',(req,res)=>{
     const {token} = req.cookies;
-    try{
-        jwt.verify(token,key,(err,info)=>{
-            if(err) throw err;
-            res.json(info);
-        });
-    }catch(err){
-        console.log(err);
-        res.json({message: "something wrong"})
+    if(token){
+            try{
+            jwt.verify(token,key,(err,info)=>{
+                if(err) throw err;
+                res.json(info);
+            });
+        }catch(err){
+            console.log(err);
+            res.json({message: "something wrong"})
+        }
+    }else{
+        res.json({message: "no token"}) 
     }
 })
 
@@ -57,7 +60,7 @@ app.post('/logout',(req,res)=>{
 })
 
 app.post('/post',uploadMiddle.single('file') ,async(req,res)=>{
-    
+    try{
     const {originalname , path} = req.file;
     const parts = originalname.split('.');
     const ext = parts[parts.length -1];
@@ -77,46 +80,70 @@ app.post('/post',uploadMiddle.single('file') ,async(req,res)=>{
         })
         res.json(postDoc);
     });
+    }catch(err){
+        console.log(err);
+        res.statusCode().json({msg:"Something went wrong"});
+    }
 })
 
 app.put('/post',uploadMiddle.single('file') ,jwtVerify,async(req,res)=>{
-    let newPath = null;
-    if(req.file){
-        const {originalname , path} = req.file;
-        const parts = originalname.split('.');
-        const ext = parts[parts.length -1];
-        newPath = path + '.' + ext;
-        fs.renameSync(path,newPath);
-    } 
-    const info = req.info;
-    const {id,title, summary, content} = req.body;
-    const postDoc = await PostModel.findById(id);
-    const isAuthor = JSON.stringify(postDoc.author) == JSON.stringify(info.id);
-    if(!isAuthor){
-        return res.status(400).json('no permission for you bitch');
+    try{
+        let newPath = null;
+        if(req.file){
+            const {originalname , path} = req.file;
+            const parts = originalname.split('.');
+            const ext = parts[parts.length -1];
+            newPath = path + '.' + ext;
+            fs.renameSync(path,newPath);
+        } 
+        const info = req.info;
+        const {id,title, summary, content} = req.body;
+        const postDoc = await PostModel.findById(id);
+        const isAuthor = JSON.stringify(postDoc.author) == JSON.stringify(info.id);
+        if(!isAuthor){
+            return res.status(400).json('no permission for you bitch');
+        }
+        await postDoc.updateOne({
+            title,
+            summary,
+            content,
+            cover: newPath ? newPath : postDoc.cover,
+        })
+        res.json(postDoc);
+    }catch(err){
+        console.log(err);
+        res.statu(500).json({message:"something went wrong"})
     }
-    await postDoc.updateOne({
-        title,
-        summary,
-        content,
-        cover: newPath ? newPath : postDoc.cover,
-    })
-    res.json(postDoc);
-    
 })
 
 app.get('/post', async(req,res)=>{
-    const post =await PostModel.find({})
-    .populate('author',['username'])
-    .sort({createdAt :- 1})
-    .limit(20);
-    res.json(post);
+    try{
+        const post =await PostModel.find({})
+        .populate('author',['username'])
+        .sort({createdAt :- 1})
+        .limit(20);
+        res.json(post);
+    }catch(err){
+        res.status(500).json({message:"something went wrong"});
+    }
 })
 
 app.get('/post/:id',async(req,res)=>{
     const {id} = req.params;
-    const post = await PostModel.findById(id).populate('author',['username']);
-    res.json(post);
+    try{
+        const post = await PostModel.findById(id).populate('author',['username']);
+        res.json(post);
+    }catch(err){
+        res.status(404).json('no post found');
+    }
+})
+app.use((req,res,next)=>{
+    res.status(400).json({message:'Page not found'});
+    next();
+})
+app.use((err,req,res,next)=>{
+    console.log(err);
+    res.status(500).send('Something Broke!');
 })
 
 
