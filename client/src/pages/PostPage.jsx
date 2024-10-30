@@ -2,13 +2,15 @@ import { useContext, useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import {format} from "date-fns"
 import {UserContext} from "../UserContext"
+import { url } from "../utils/url";
 
 export default function POstPage(){
     const [postInfo,setPostInfo]= useState(null);
     const {userInfo} = useContext(UserContext)
     const {id} = useParams();
+    const url = url;
     useEffect(()=>{
-        fetch(`http://localhost:3000/post/${id}`).then((response)=>{
+        fetch(`${url}/post/${id}`).then((response)=>{
             response.json().then(postInfo=>{
                 setPostInfo(postInfo);
             })

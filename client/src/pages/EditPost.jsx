@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { Navigate, useParams } from "react-router-dom";
+import { url } from "../utils/url";
 
 
 const toolbarOptions = [
@@ -34,9 +35,10 @@ export default function EditPost(){
     const [content,setContent] = useState('');
     const [files,setFiles] = useState('');
     const [redirect,setRedirect] = useState(false);
+    const url = url;
 
     useEffect(()=>{
-        fetch(`http://localhost:3000/post/${id}`).then(response =>{
+        fetch(`${url}/post/${id}`).then(response =>{
             response.json().then(postInfo=>{
                 setTitle(postInfo.title);
                 setSummary(postInfo.summary);
@@ -55,7 +57,7 @@ export default function EditPost(){
             data.set('file',files?.[0])
         }
         
-        const response = await fetch('http://localhost:3000/post',{
+        const response = await fetch(`${url}/post`,{
             method:'PUT',
             body:data,
             credentials:'include',

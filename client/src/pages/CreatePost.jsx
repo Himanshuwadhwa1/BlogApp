@@ -2,6 +2,7 @@ import { useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { Navigate } from "react-router-dom";
+import { url } from '../utils/url';
 
 const toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'],
@@ -30,6 +31,7 @@ export default function CreatePost(){
     const [content,setContent] = useState('');
     const [files,setFiles] = useState('');
     const [redirect,setRedirect] = useState(false);
+    const url = url;
 
     async function createNewPost(event){
         const data = new FormData();
@@ -38,7 +40,7 @@ export default function CreatePost(){
         data.set('content',content);
         data.set('file',files[0])
         event.preventDefault();
-        const response = await fetch('http://localhost:3000/post',{
+        const response = await fetch(`${url}/post`,{
             method: 'POST',
             body:data,
             credentials:'include',

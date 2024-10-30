@@ -1,11 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "./UserContext";
+import { url } from "./utils/url";
 
 export default function Headers(){
+    const url = url;
     const {userInfo, setUserInfo}= useContext(UserContext);
     useEffect(()=>{
-        fetch('http://localhost:3000/profile',{ //get endpoint of api /profile to get cookies from webpage to api
+        fetch(`${url}/profile`,{ //get endpoint of api /profile to get cookies from webpage to api
             credentials:'include',
         }).then((response)=>{
             response.json().then((userInfo)=>{
@@ -15,7 +17,7 @@ export default function Headers(){
     },[])
 
     async function logout(){
-        await fetch('http://localhost:3000/logout',{ //get endpoint of api /logout to delete
+        await fetch(`${url}/logout`,{ //get endpoint of api /logout to delete
             method: 'POST',
             credentials: 'include',
         });
