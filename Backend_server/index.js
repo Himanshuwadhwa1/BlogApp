@@ -28,9 +28,10 @@ app.use(express.json());
 app.use(cookieParser()); //to parse cookie we get from webpage as req
 app.use('/uploads',express.static(__dirname+'/uploads'));
 
+const allowedOrigins = [process.env.origin, process.env.origin2].filter(Boolean);
 
 app.use(cors({
-    origin: process.env.origin,
+    origin: allowedOrigins,
     credentials: true,
     }
 ));
