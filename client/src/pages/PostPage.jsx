@@ -8,9 +8,9 @@ export default function POstPage(){
     const [postInfo,setPostInfo]= useState(null);
     const {userInfo} = useContext(UserContext)
     const {id} = useParams();
-    const url = url;
+    const url2 = url;
     useEffect(()=>{
-        fetch(`${url}/post/${id}`).then((response)=>{
+        fetch(`${url2}/post/${id}`).then((response)=>{
             response.json().then(postInfo=>{
                 setPostInfo(postInfo);
             })

@@ -7,12 +7,12 @@ export default function LoginPage(){
     const [username,setUsername] = useState('');
     const [password,setPassword] = useState('');
     const [redirect,setRedirect] = useState(false);
-    const url = url;
+    const url2 = url;
     const {setUserInfo} = useContext(UserContext);
 
     async function login(event){
         event.preventDefault();
-        const response = await fetch(`${url}/login`,{
+        const response = await fetch(`${url2}/login`,{
             method: 'POST',
             body:JSON.stringify({username,password}),
             headers:{'Content-Type': 'application/json',},

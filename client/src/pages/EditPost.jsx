@@ -35,10 +35,10 @@ export default function EditPost(){
     const [content,setContent] = useState('');
     const [files,setFiles] = useState('');
     const [redirect,setRedirect] = useState(false);
-    const url = url;
+    const url2 = url;
 
     useEffect(()=>{
-        fetch(`${url}/post/${id}`).then(response =>{
+        fetch(`${url2}/post/${id}`).then(response =>{
             response.json().then(postInfo=>{
                 setTitle(postInfo.title);
                 setSummary(postInfo.summary);
@@ -57,7 +57,7 @@ export default function EditPost(){
             data.set('file',files?.[0])
         }
         
-        const response = await fetch(`${url}/post`,{
+        const response = await fetch(`${url2}/post`,{
             method:'PUT',
             body:data,
             credentials:'include',

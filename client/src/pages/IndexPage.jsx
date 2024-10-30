@@ -4,9 +4,9 @@ import { url } from "../utils/url";
 
 export default function IndexPage(){
     const [posts,setPosts] = useState([]);
-    const url = url;
+    const url2 = url;
     useEffect(()=>{
-        fetch(`${url}/post`).then(response=>{
+        fetch(`${url2}/post`).then(response=>{
             response.json().then(post=>{
                 setPosts(post);
             })

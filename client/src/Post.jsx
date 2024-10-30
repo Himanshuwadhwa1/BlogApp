@@ -1,11 +1,13 @@
 import {format} from "date-fns";
 import { Link } from "react-router-dom";
+import { url } from "./utils/url";
 export default function Post({_id,title,summary,cover,content,createdAt,author}){
+  const url2 = url;
     return(
         <div className="post">
         <div className="image">
           <Link to={`/post/${_id}`}>
-            <img src={'http://localhost:3000/' + cover} alt="" />
+            <img src={`${url2}/` + cover} alt="" />
           </Link>
         </div>
         <div className="text">

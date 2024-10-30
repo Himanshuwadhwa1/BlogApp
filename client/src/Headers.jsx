@@ -4,11 +4,10 @@ import { UserContext } from "./UserContext";
 import { url } from "./utils/url";
 
 export default function Headers(){
-    const url = url;
+    const url2 = url;
     const {userInfo, setUserInfo}= useContext(UserContext);
-    console,log(url);
     useEffect(()=>{
-        fetch(`${url}/profile`,{ //get endpoint of api /profile to get cookies from webpage to api
+        fetch(`${url2}/profile`,{ //get endpoint of api /profile to get cookies from webpage to api
             credentials:'include',
         }).then((response)=>{
             response.json().then((userInfo)=>{
@@ -18,7 +17,7 @@ export default function Headers(){
     },[])
 
     async function logout(){
-        await fetch(`${url}/logout`,{ //get endpoint of api /logout to delete
+        await fetch(`${url2}/logout`,{ //get endpoint of api /logout to delete
             method: 'POST',
             credentials: 'include',
         });

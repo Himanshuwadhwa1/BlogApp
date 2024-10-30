@@ -31,7 +31,7 @@ export default function CreatePost(){
     const [content,setContent] = useState('');
     const [files,setFiles] = useState('');
     const [redirect,setRedirect] = useState(false);
-    const url = url;
+    const url2 = url;
 
     async function createNewPost(event){
         const data = new FormData();
@@ -40,7 +40,7 @@ export default function CreatePost(){
         data.set('content',content);
         data.set('file',files[0])
         event.preventDefault();
-        const response = await fetch(`${url}/post`,{
+        const response = await fetch(`${url2}/post`,{
             method: 'POST',
             body:data,
             credentials:'include',

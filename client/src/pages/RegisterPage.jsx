@@ -4,10 +4,10 @@ import { url } from "../utils/url";
 export default function RegisterPage(){
     const [username,setUsername] = useState('');
     const [password,setPassword] = useState('');
-    const url = url;
+    const url2 = url;
     async function register(event){
         event.preventDefault();
-        const response = await fetch(`${url}/register`,{
+        const response = await fetch(`${url2}/register`,{
             method: 'POST',
             body: JSON.stringify({username,password}),
             headers: {'Content-Type' : 'application/json'},
