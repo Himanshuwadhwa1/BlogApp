@@ -6,6 +6,7 @@ import { url } from "./utils/url";
 export default function Headers(){
     const url = url;
     const {userInfo, setUserInfo}= useContext(UserContext);
+    console,log(url);
     useEffect(()=>{
         fetch(`${url}/profile`,{ //get endpoint of api /profile to get cookies from webpage to api
             credentials:'include',
