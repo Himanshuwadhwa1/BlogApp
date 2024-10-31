@@ -23,7 +23,7 @@ const key = process.env.key; //write your own secret key
 
 
 const app = express();
-const port = process.env.port;
+const port = process.env.port || 3000;
 app.use(express.json());
 app.use(cookieParser()); //to parse cookie we get from webpage as req
 app.use('/uploads',express.static(__dirname+'/uploads'));
