@@ -159,3 +159,10 @@ div.post-page a.edit-btn{
 a svg{
     height: 21px;
 }
+.loading{
+    height:80vh;
+    width: 100vb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
