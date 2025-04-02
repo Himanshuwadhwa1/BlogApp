@@ -3,7 +3,7 @@ import cors from "cors";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
 import fs from "fs"
-import {userModel,PostModel} from "./db/db.js"
+import {PostModel} from "./db/db.js"
 import {uploadMiddle} from "./middlewares/multer.js"
 import { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -12,6 +12,7 @@ import { jwtVerify } from "./middlewares/jwt.js";
 import { registerRouter } from "./routes/register.js";
 
 import dotenv from "dotenv";
+import { dbMiddleware } from "./middlewares/dbConnect.js";
 
 dotenv.config();
 
@@ -35,6 +36,7 @@ app.use(cors({
     credentials: true,
     }
 ));
+app.use(dbMiddleware);
 app.use('/login',router);
 app.use('/register',registerRouter)
 

@@ -9,7 +9,14 @@ const pass = process.env.password
 
 const str = `mongodb+srv://${user}:${pass}@cluster0.uvng3.mongodb.net/blog`
 
-mongoose.connect(str) //add your mongo connection url
+const connectToDatabase = async () => {
+  try {
+    await mongoose.connect(str);
+    console.log('Database connected');
+  } catch (error) {
+    console.error('Database connection error:', error);
+  }
+};
 const postSchema = new mongoose.Schema({
     title : String,
     summary: String,
@@ -30,6 +37,7 @@ const UserSchema = new mongoose.Schema({
 const userModel = mongoose.model('User', UserSchema);
 
 export {
+    connectToDatabase,
     PostModel,
     userModel,
     pass,
